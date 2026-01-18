@@ -1,54 +1,57 @@
 export default new class {
     url = "https://hanime-stremio.fly.dev";
 
-    async single(args, options) {
+    // This matches the property structure in your AnimeTosho example
+    map(streams) {
+        if (!Array.isArray(streams)) return [];
+        return streams.map(s => ({
+            title: s.title || s.name || "Direct Stream",
+            link: s.url,
+            seeders: 0,
+            leechers: 0,
+            downloads: 0,
+            hash: s.url.split('/').pop() || "0000", // Hayase often needs a 'hash' string
+            size: 0,
+            accuracy: "high",
+            date: new Date()
+        }));
+    }
+
+    async single(args) {
         try {
-            // Hayase uses anidbEid for episodes. Stremio uses 'id'.
-            // We check for both to be safe.
+            // Check for anidbEid (standard Hayase) or generic id
             const id = args?.anidbEid || args?.id;
             if (!id) return [];
 
-            // Ensure ID is a string before calling .includes
             const sid = String(id).includes("hanime:") ? id : `hanime:${id}`;
+            const response = await fetch(`${this.url}/stream/anime/${sid}.json`);
             
-            const res = await fetch(`${this.url}/stream/anime/${sid}.json`);
-            if (!res.ok) return [];
-
-            const data = await res.json();
+            if (!response.ok) return [];
             
-            // If streams is missing or not an array, return empty array
-            if (!data || !Array.isArray(data.streams)) return [];
-
-            return data.streams.map(s => ({
-                title: s.title || s.name || "Direct Link",
-                link: s.url,
-                size: 0,
-                accuracy: "high"
-            }));
+            const data = await response.json();
+            // Crucial: return the result of map, which is an array
+            return data.streams ? this.map(data.streams) : [];
         } catch (e) {
-            console.error(e);
-            return []; // Crucial: Always return an array to prevent "not iterable"
+            // Returning an empty array prevents "o is not iterable"
+            return [];
         }
     }
 
-    // Hayase calls 'movie' for films
-    async movie(args, options) {
-        // Reuse the logic from single
+    async movie(args) {
+        // Movies use anidbAid in Hayase
         const id = args?.anidbAid || args?.id;
-        return await this.single({ id }, options);
+        return await this.single({ id });
     }
 
-    // Hayase calls 'batch' for series
-    async batch(args, options) {
-        const id = args?.anidbAid || args?.id;
-        return await this.single({ id }, options);
+    async batch(args) {
+        return []; // Always return an array
     }
 
     async test() {
         try {
             const res = await fetch(`${this.url}/manifest.json`);
             return res.ok;
-        } catch {
+        } catch (e) {
             return false;
         }
     }
