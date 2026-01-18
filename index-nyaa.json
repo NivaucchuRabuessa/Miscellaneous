@@ -1,0 +1,15 @@
+[
+  {
+    "name": "Nyaa Sukebei",
+    "id": "sukebei-nyaa",
+    "description": "Nyaa Sukebei RSS search for Hayase.",
+    "version": "1.0.0",
+    "type": "torrent",
+    "accuracy": "medium",
+    "ratio": 0,
+    "media": "sub",
+    "languages": ["US"],
+    "icon": "https://sukebei.nyaa.si/static/favicon.png",
+    "code": "https://github.com/NivaucchuRabuessa/Miscellaneous/blob/main/code-nyaa.js"
+  }
+]
