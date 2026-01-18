@@ -1,50 +1,47 @@
 export default new class {
-    // The base URL for the Hanime Stremio Addon
     url = "https://hanime-stremio.fly.dev";
 
-    /**
-     * Helper to safely map streams to Hayase format.
-     * Ensures we always return an array.
-     */
-    map(streams) {
-        if (!streams || !Array.isArray(streams)) return [];
-        
-        return streams.map(s => ({
-            title: s.title || s.name || "Unknown Video",
-            link: s.url,
-            size: 0, 
-            accuracy: "high"
-        }));
-    }
-
-    async single({ id }) {
+    async single(args, options) {
         try {
+            // Hayase uses anidbEid for episodes. Stremio uses 'id'.
+            // We check for both to be safe.
+            const id = args?.anidbEid || args?.id;
             if (!id) return [];
 
-            // Stremio IDs for this addon usually look like "hanime:slug-name"
-            const sid = id.includes("hanime:") ? id : `hanime:${id}`;
+            // Ensure ID is a string before calling .includes
+            const sid = String(id).includes("hanime:") ? id : `hanime:${id}`;
             
             const res = await fetch(`${this.url}/stream/anime/${sid}.json`);
-            
-            if (!res.ok) return []; // Return empty array if addon is down or ID not found
+            if (!res.ok) return [];
 
             const data = await res.json();
             
-            // data.streams must be an array for Hayase to iterate over it
-            return this.map(data.streams);
-        } catch (err) {
-            console.error("Hanime Error:", err);
-            return []; // Return empty array on error to prevent "o is not iterable"
+            // If streams is missing or not an array, return empty array
+            if (!data || !Array.isArray(data.streams)) return [];
+
+            return data.streams.map(s => ({
+                title: s.title || s.name || "Direct Link",
+                link: s.url,
+                size: 0,
+                accuracy: "high"
+            }));
+        } catch (e) {
+            console.error(e);
+            return []; // Crucial: Always return an array to prevent "not iterable"
         }
     }
 
-    async movie(args) {
-        return await this.single(args);
+    // Hayase calls 'movie' for films
+    async movie(args, options) {
+        // Reuse the logic from single
+        const id = args?.anidbAid || args?.id;
+        return await this.single({ id }, options);
     }
 
-    // Hayase sometimes checks for batch, we return empty array
-    async batch() {
-        return [];
+    // Hayase calls 'batch' for series
+    async batch(args, options) {
+        const id = args?.anidbAid || args?.id;
+        return await this.single({ id }, options);
     }
 
     async test() {
