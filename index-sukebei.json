@@ -1,8 +1,8 @@
 [
   {
-    "name": "Nyaa Sukebei",
-    "id": "sukebei-nyaa",
-    "description": "Nyaa Sukebei RSS search for Hayase.",
+    "name": "Sukebei Nyaa",
+    "id": "sukebei-nyaa-ext",
+    "description": "Nyaa Sukebei RSS search source for torrents.",
     "version": "1.0.0",
     "type": "torrent",
     "accuracy": "medium",
