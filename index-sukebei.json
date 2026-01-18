@@ -1,7 +1,8 @@
 [
   {
     "name": "Sukebei Nyaa",
-    "id": "sukebei-ext",
+    "id": "sukebei-nyaa",
+    "description": "Sukebei Nyaa torrent provider for Hayase.",
     "version": "0.1.0",
     "type": "torrent",
     "accuracy": "high",
@@ -11,7 +12,7 @@
       "US"
     ],
     "icon": "https://sukebei.nyaa.si/static/favicon.png",
-    "update": "https://github.com/NivaucchuRabuessa/Miscellaneous/blob/main/index-sukebei.js",
+    "update": "https://github.com/NivaucchuRabuessa/Miscellaneous/blob/main/index-sukebei.json",
     "code": "https://github.com/NivaucchuRabuessa/Miscellaneous/blob/main/code-sukebei.js"
   }
 ]
