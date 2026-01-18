@@ -1,15 +1,17 @@
 [
   {
     "name": "Sukebei Nyaa",
-    "id": "sukebei-nyaa-ext",
-    "description": "Nyaa Sukebei RSS search source for torrents.",
-    "version": "1.0.0",
+    "id": "sukebei-ext",
+    "version": "0.1.0",
     "type": "torrent",
-    "accuracy": "medium",
+    "accuracy": "high",
     "ratio": 0,
     "media": "sub",
-    "languages": ["US"],
+    "languages": [
+      "US"
+    ],
     "icon": "https://sukebei.nyaa.si/static/favicon.png",
+    "update": "https://github.com/NivaucchuRabuessa/Miscellaneous/blob/main/index-sukebei.js",
     "code": "https://github.com/NivaucchuRabuessa/Miscellaneous/blob/main/code-sukebei.js"
   }
 ]

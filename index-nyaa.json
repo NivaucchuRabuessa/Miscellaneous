@@ -2,14 +2,16 @@
   {
     "name": "Nyaa",
     "id": "nyaa-ext",
-    "description": "Nyaa RSS search source for torrents.",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "type": "torrent",
-    "accuracy": "medium",
+    "accuracy": "high",
     "ratio": 0,
     "media": "sub",
-    "languages": ["US"],
+    "languages": [
+      "US"
+    ],
     "icon": "https://nyaa.si/static/favicon.png",
+    "update": "https://github.com/NivaucchuRabuessa/Miscellaneous/blob/main/index-nyaa.js",
     "code": "https://github.com/NivaucchuRabuessa/Miscellaneous/blob/main/code-nyaa.js"
   }
 ]
