@@ -12,7 +12,7 @@
       "US"
     ],
     "icon": "https://nyaa.si/static/favicon.png",
-    "update": "https://github.com/NivaucchuRabuessa/Miscellaneous/blob/main/index-nyaa.json",
-    "code": "https://github.com/NivaucchuRabuessa/Miscellaneous/blob/main/code-nyaa.js"
+    "update": "https://raw.githubusercontent.com/NivaucchuRabuessa/Miscellaneous/main/index-nyaa.json",
+    "code": "https://raw.githubusercontent.com/NivaucchuRabuessa/Miscellaneous/main/code-nyaa.js"
   }
 ]
