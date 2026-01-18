@@ -1,16 +1,16 @@
 export default new class {
     url = "https://hanime-stremio.fly.dev";
 
-    // This matches the property structure in your AnimeTosho example
+    // This mapping mimics exactly what AnimeTosho returns
     map(streams) {
         if (!Array.isArray(streams)) return [];
         return streams.map(s => ({
-            title: s.title || s.name || "Direct Stream",
-            link: s.url,
-            seeders: 0,
-            leechers: 0,
-            downloads: 0,
-            hash: s.url.split('/').pop() || "0000", // Hayase often needs a 'hash' string
+            title: s.title || s.name || "Hanime Stream",
+            link: s.url, // The app will treat this as the magnet/torrent link
+            seeders: 100, // Dummy value
+            leechers: 10,  // Dummy value
+            downloads: 50, // Dummy value
+            hash: btoa(s.url).substring(0, 20), // Needs a string hash
             size: 0,
             accuracy: "high",
             date: new Date()
@@ -19,32 +19,31 @@ export default new class {
 
     async single(args) {
         try {
-            // Check for anidbEid (standard Hayase) or generic id
+            // Hayase uses anidbEid for episodes
             const id = args?.anidbEid || args?.id;
             if (!id) return [];
 
             const sid = String(id).includes("hanime:") ? id : `hanime:${id}`;
-            const response = await fetch(`${this.url}/stream/anime/${sid}.json`);
+            const res = await fetch(`${this.url}/stream/anime/${sid}.json`);
             
-            if (!response.ok) return [];
-            
-            const data = await response.json();
-            // Crucial: return the result of map, which is an array
+            if (!res.ok) return [];
+
+            const data = await res.json();
             return data.streams ? this.map(data.streams) : [];
         } catch (e) {
-            // Returning an empty array prevents "o is not iterable"
             return [];
         }
     }
 
     async movie(args) {
-        // Movies use anidbAid in Hayase
+        // Hayase uses anidbAid for movies
         const id = args?.anidbAid || args?.id;
         return await this.single({ id });
     }
 
     async batch(args) {
-        return []; // Always return an array
+        // Must return an empty array, not undefined
+        return [];
     }
 
     async test() {
